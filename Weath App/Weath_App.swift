@@ -8,10 +8,10 @@
 import SwiftUI
 
 @main
-struct Weath_AppApp: App {
+struct Weath_App: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
         }
     }
 }
