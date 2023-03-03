@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		992B90B229B2474E00A26A61 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 992B90B129B2474E00A26A61 /* FirebaseFirestore */; };
+		992B90B429B2474E00A26A61 /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 992B90B329B2474E00A26A61 /* FirebaseFirestoreCombine-Community */; };
+		992B90B629B2474E00A26A61 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 992B90B529B2474E00A26A61 /* FirebaseFirestoreSwift */; };
 		AD4643F329B081BF00FB240C /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4643F229B081BF00FB240C /* SearchBarView.swift */; };
 		AD4643F629B0B91A00FB240C /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4643F529B0B91A00FB240C /* CardView.swift */; };
 		AD4643F829B0D6A000FB240C /* TemperatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4643F729B0D6A000FB240C /* TemperatureView.swift */; };
@@ -28,9 +31,6 @@
 		ADDA784829B032CA00A6760C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDA784729B032CA00A6760C /* HomeView.swift */; };
 		ADDA784A29B032CD00A6760C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ADDA784929B032CD00A6760C /* Assets.xcassets */; };
 		ADDA784D29B032CD00A6760C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ADDA784C29B032CD00A6760C /* Preview Assets.xcassets */; };
-		ADDA785729B032CD00A6760C /* Weath_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDA785629B032CD00A6760C /* Weath_AppTests.swift */; };
-		ADDA786129B032CD00A6760C /* Weath_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDA786029B032CD00A6760C /* Weath_AppUITests.swift */; };
-		ADDA786329B032CD00A6760C /* Weath_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDA786229B032CD00A6760C /* Weath_AppUITestsLaunchTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,10 +94,7 @@
 		ADDA784929B032CD00A6760C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ADDA784C29B032CD00A6760C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		ADDA785229B032CD00A6760C /* Weath AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Weath AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		ADDA785629B032CD00A6760C /* Weath_AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weath_AppTests.swift; sourceTree = "<group>"; };
 		ADDA785C29B032CD00A6760C /* Weath AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Weath AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		ADDA786029B032CD00A6760C /* Weath_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weath_AppUITests.swift; sourceTree = "<group>"; };
-		ADDA786229B032CD00A6760C /* Weath_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weath_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +111,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				992B90B429B2474E00A26A61 /* FirebaseFirestoreCombine-Community in Frameworks */,
 				AD9D337F29B1A72100BA9332 /* Alamofire in Frameworks */,
+				992B90B229B2474E00A26A61 /* FirebaseFirestore in Frameworks */,
+				992B90B629B2474E00A26A61 /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,8 +227,6 @@
 			isa = PBXGroup;
 			children = (
 				ADDA784429B032CA00A6760C /* Weath App */,
-				ADDA785529B032CD00A6760C /* Weath AppTests */,
-				ADDA785F29B032CD00A6760C /* Weath AppUITests */,
 				AD46440529B0E9FF00FB240C /* WeathWidget */,
 				AD46440029B0E9FF00FB240C /* Frameworks */,
 				ADDA784329B032CA00A6760C /* Products */,
@@ -270,23 +268,6 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		ADDA785529B032CD00A6760C /* Weath AppTests */ = {
-			isa = PBXGroup;
-			children = (
-				ADDA785629B032CD00A6760C /* Weath_AppTests.swift */,
-			);
-			path = "Weath AppTests";
-			sourceTree = "<group>";
-		};
-		ADDA785F29B032CD00A6760C /* Weath AppUITests */ = {
-			isa = PBXGroup;
-			children = (
-				ADDA786029B032CD00A6760C /* Weath_AppUITests.swift */,
-				ADDA786229B032CD00A6760C /* Weath_AppUITestsLaunchTests.swift */,
-			);
-			path = "Weath AppUITests";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -324,6 +305,9 @@
 			name = "Weath App";
 			packageProductDependencies = (
 				AD9D337E29B1A72100BA9332 /* Alamofire */,
+				992B90B129B2474E00A26A61 /* FirebaseFirestore */,
+				992B90B329B2474E00A26A61 /* FirebaseFirestoreCombine-Community */,
+				992B90B529B2474E00A26A61 /* FirebaseFirestoreSwift */,
 			);
 			productName = "Weath App";
 			productReference = ADDA784229B032CA00A6760C /* Weath App.app */;
@@ -402,6 +386,7 @@
 			mainGroup = ADDA783929B032CA00A6760C;
 			packageReferences = (
 				AD9D337D29B1A72100BA9332 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				992B90B029B2474E00A26A61 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = ADDA784329B032CA00A6760C /* Products */;
 			projectDirPath = "";
@@ -482,7 +467,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ADDA785729B032CD00A6760C /* Weath_AppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,8 +474,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ADDA786329B032CD00A6760C /* Weath_AppUITestsLaunchTests.swift in Sources */,
-				ADDA786129B032CD00A6760C /* Weath_AppUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -699,14 +681,13 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.setthasit.yadar.Weath-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -730,14 +711,13 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.setthasit.yadar.Weath-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -873,6 +853,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		992B90B029B2474E00A26A61 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
 		AD9D337D29B1A72100BA9332 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -884,6 +872,21 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		992B90B129B2474E00A26A61 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 992B90B029B2474E00A26A61 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		992B90B329B2474E00A26A61 /* FirebaseFirestoreCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 992B90B029B2474E00A26A61 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFirestoreCombine-Community";
+		};
+		992B90B529B2474E00A26A61 /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 992B90B029B2474E00A26A61 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
 		AD9D337E29B1A72100BA9332 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AD9D337D29B1A72100BA9332 /* XCRemoteSwiftPackageReference "Alamofire" */;
