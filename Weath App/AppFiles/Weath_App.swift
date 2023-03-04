@@ -6,16 +6,20 @@
 //
 
 import SwiftUI
-import FirebaseCore
+import Firebase
 
 @main
 struct Weath_App: App {
-    init() {
-        FirebaseApp.configure()
-    }
+//    let firebaseApp = FirebaseApp.shared
+    
     var body: some Scene {
         WindowGroup {
             HomeView()
         }
+    }
+    
+    // MARK: - Initialize Firebase
+    init() {
+        FirebaseApp.configure()
     }
 }
