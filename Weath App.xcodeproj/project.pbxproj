@@ -105,13 +105,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		99AAFCFE29B2485600F71BFA /* Supporting */ = {
+		9907ECCE29B360DB00CF987D /* Widget */ = {
+			isa = PBXGroup;
+			children = (
+				AD46440529B0E9FF00FB240C /* WeathWidget */,
+			);
+			path = Widget;
+			sourceTree = "<group>";
+		};
+		9907ECCF29B360F500CF987D /* AppFiles */ = {
+			isa = PBXGroup;
+			children = (
+				ADDA784529B032CA00A6760C /* Weath_App.swift */,
+			);
+			path = AppFiles;
+			sourceTree = "<group>";
+		};
+		99AAFCFE29B2485600F71BFA /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
 				99AAFCFF29B2487400F71BFA /* Resources */,
 				ADDA784B29B032CD00A6760C /* Preview Content */,
 			);
-			path = Supporting;
+			path = SupportFiles;
 			sourceTree = "<group>";
 		};
 		99AAFCFF29B2487400F71BFA /* Resources */ = {
@@ -214,7 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				ADDA784429B032CA00A6760C /* Weath App */,
-				AD46440529B0E9FF00FB240C /* WeathWidget */,
+				9907ECCE29B360DB00CF987D /* Widget */,
 				AD46440029B0E9FF00FB240C /* Frameworks */,
 				ADDA784329B032CA00A6760C /* Products */,
 			);
@@ -232,14 +248,14 @@
 		ADDA784429B032CA00A6760C /* Weath App */ = {
 			isa = PBXGroup;
 			children = (
+				9907ECCF29B360F500CF987D /* AppFiles */,
 				AD4643EF29B079C300FB240C /* Utilities */,
 				AD4643EE29B079A200FB240C /* Services */,
 				AD4643ED29B0798500FB240C /* Model */,
 				AD4643EC29B0797A00FB240C /* Helpers */,
 				AD4643EB29B0796C00FB240C /* ViewModel */,
 				AD4643EA29B0796500FB240C /* View */,
-				ADDA784529B032CA00A6760C /* Weath_App.swift */,
-				99AAFCFE29B2485600F71BFA /* Supporting */,
+				99AAFCFE29B2485600F71BFA /* SupportFiles */,
 			);
 			path = "Weath App";
 			sourceTree = "<group>";
