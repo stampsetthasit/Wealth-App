@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+struct WeatherData {
+    let locationName: String
+    let date: Date
+    let temperature: Double
+    let humidity: Double
+    let pressure: Double
+    let windSpeed: Double
+    let weatherDescription: String
+}
+
