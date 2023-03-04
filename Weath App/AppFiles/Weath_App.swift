@@ -2,7 +2,7 @@
 //  Weath_AppApp.swift
 //  Weath App
 //
-//  Created by Yadar Tulayathamrong on 2/3/2566 BE.
+//  Created by Setthasit Poosawat on 5/3/23.
 //
 
 import SwiftUI

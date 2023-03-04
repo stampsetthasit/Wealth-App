@@ -2,7 +2,7 @@
 //  WeatherModel.swift
 //  Weath App
 //
-//  Created by Yadar Tulayathamrong on 3/3/2566 BE.
+//  Created by Setthasit Poosawat on 5/3/23.
 //
 
 import Foundation
