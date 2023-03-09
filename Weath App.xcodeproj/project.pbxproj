@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9918523229B9D04B006C3BE3 /* LocationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9918523129B9D04B006C3BE3 /* LocationError.swift */; };
 		992B90B229B2474E00A26A61 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 992B90B129B2474E00A26A61 /* FirebaseFirestore */; };
 		992B90B429B2474E00A26A61 /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 992B90B329B2474E00A26A61 /* FirebaseFirestoreCombine-Community */; };
 		992B90B629B2474E00A26A61 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 992B90B529B2474E00A26A61 /* FirebaseFirestoreSwift */; };
@@ -70,6 +71,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9918523129B9D04B006C3BE3 /* LocationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationError.swift; sourceTree = "<group>"; };
 		996589D229B900E500507AE1 /* WeatherManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherManagerDelegate.swift; sourceTree = "<group>"; };
 		996589D429B912D300507AE1 /* API+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Extensions.swift"; sourceTree = "<group>"; };
 		996589D629B913EC00507AE1 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				996589DA29B9168500507AE1 /* HTTPError.swift */,
+				9918523129B9D04B006C3BE3 /* LocationError.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -511,6 +514,7 @@
 				996589D529B912D300507AE1 /* API+Extensions.swift in Sources */,
 				AD4643F629B0B91A00FB240C /* CardView.swift in Sources */,
 				996589D329B900E600507AE1 /* WeatherManagerDelegate.swift in Sources */,
+				9918523229B9D04B006C3BE3 /* LocationError.swift in Sources */,
 				AD4643F329B081BF00FB240C /* SearchBarView.swift in Sources */,
 				AD46441129B0EA0200FB240C /* WeathWidget.intentdefinition in Sources */,
 			);
