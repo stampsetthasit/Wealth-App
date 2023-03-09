@@ -6,32 +6,69 @@
 //
 
 import Foundation
+import CoreLocation
 
-class WeatherViewModel: ObservableObject {
-    // MARK: - Properties
-    @Published var weatherData: WeatherModel?
-    private let firestoreManager = FirestoreManager()
+final class WeatherViewModel: ObservableObject {
+    @Published var weatherModel = WeatherModel.sampleModel
+    @Published var city = "Bangkok" {
+        didSet {
+            getLocation()
+        }
+    }
+    @Published var isLoading = false
+    @Published var error: HTTPError?
     
-    // MARK: - Methods
-    func fetchWeatherData(for location: String) {
-        let apiService = WeatherAPIService()
-        
-        apiService.fetchWeatherData(for: location) { result in
-            switch result {
-            case .success(let data):
-                guard let decodedData = try? JSONDecoder().decode(WeatherModel.self, from: data) else {
-                    print("Failed to decode weather data.")
-                    return
-                }
-                
+    init() {
+        getLocation()
+    }
+    
+    private func getLocation() {
+        isLoading = true
+        error = nil
+        CLGeocoder().geocodeAddressString(city) { placemarks, error in
+            if let placemark = placemarks,
+               let place = placemarks?.first {
+                self.getWeather(place.location?.coordinate)
+            } else {
                 DispatchQueue.main.async {
-                    self.weatherData = decodedData
-                    self.firestoreManager.saveWeatherData(decodedData)
+                    self.isLoading = false
+                    self.error = .invalidCityName
                 }
-            case .failure(let error):
-                print("Failed to fetch weather data: \(error.localizedDescription)")
             }
         }
     }
+    
+    private func getWeather(_ coord: CLLocationCoordinate2D?) {
+        var urlString = ""
+        if let coord = coord {
+            urlString = API.getCurrentWeather(coord.latitude, coord.longitude)
+        } else {
+            urlString = API.getCurrentWeather(100.5167, 13.75)
+        }
+        getWeatherInternal(city: city, for: urlString)
+    }
+    
+    private func getWeatherInternal(city: String, for urlString: String) {
+        guard let url = URL(string: urlString) else { return }
+        isLoading = true
+        error = nil
+        NetworkManager<WeatherModel>.fetch(for: url) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    self.weatherModel = response
+                    self.isLoading = false
+                case .failure(let error):
+                    self.error = error
+                    self.isLoading = false
+                }
+            }
+        }
+    }
+    
+    func refreshWeather() {
+        getLocation()
+    }
+    
 }
 
