@@ -6,3 +6,13 @@
 //
 
 import Firebase
+
+class FirebaseAppManager {
+    static let shared = FirebaseAppManager()
+
+    private init() {
+        FirebaseApp.configure()
+    }
+}
+
+
