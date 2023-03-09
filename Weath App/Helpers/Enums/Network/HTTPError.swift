@@ -13,9 +13,8 @@ enum HTTPError: Error {
     case invalidData
     case decodingError(err: String)
     case error(error: String)
-    case invalidCityName
     
-    var localizedDescription: String {
+    var errorDescription: String {
         switch self {
         case .invalidURL:
             return "Invalid URL"
@@ -27,8 +26,6 @@ enum HTTPError: Error {
             return "Decoding Error: \(err)"
         case .error(let error):
             return "Error: \(error)"
-        case .invalidCityName:
-            return "Invalid City Name"
         }
     }
 }
