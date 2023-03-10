@@ -9,13 +9,22 @@ import Foundation
 
 struct WeatherModel: Codable {
     let name: String
-    let main: Main
     let weather: [Weather]
-    let dt: Int
-    let sys: Sys
+    let main: Main
     let wind: Wind
-    
-    static var sampleModel = WeatherModel(name: "BKK", main: Main(temp: 306.09, feelsLike: 312.52, tempMin: 305.88, tempMax: 311.43, humidity: 60), weather: [Weather(id: 800, description: "clear sky", icon: "01d")], dt: 1678343102, sys: Sys(sunrise: 1678318199, sunset: 1678361254), wind: Wind(speed: 2.96))
+    let sys: Sys
+    let forecast: [Forecast]?
+    let timestamp: Int
+
+    enum CodingKeys: String, CodingKey {
+        case name
+        case weather
+        case main
+        case wind
+        case sys
+        case timestamp = "dt"
+        case forecast = "list"
+    }
 }
 
 struct Main: Codable {
@@ -23,13 +32,15 @@ struct Main: Codable {
     let feelsLike: Double
     let tempMin: Double
     let tempMax: Double
+    let pressure: Int
     let humidity: Int
-    
+
     enum CodingKeys: String, CodingKey {
         case temp
         case feelsLike = "feels_like"
         case tempMin = "temp_min"
         case tempMax = "temp_max"
+        case pressure
         case humidity
     }
 }
@@ -41,10 +52,31 @@ struct Sys: Codable {
 
 struct Weather: Codable {
     let id: Int
+    let main: String
     let description: String
     let icon: String
 }
 
 struct Wind: Codable {
     let speed: Double
+    let direction: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case speed
+        case direction = "deg"
+    }
+}
+
+struct Forecast: Codable {
+    let timestamp: Date?
+    let weather: [Weather]
+    let main: Main
+    let wind: Wind
+
+    enum CodingKeys: String, CodingKey {
+        case timestamp = "dt"
+        case weather
+        case main
+        case wind
+    }
 }

@@ -42,7 +42,7 @@ import CoreLocation
 class WeatherViewModel: NSObject, ObservableObject {
     private let locationManager = CLLocationManager()
     
-    @Published var weatherData: WeatherModel?
+    @Published var weatherModel: WeatherModel?
     @Published var errorMessage: String?
     
     override init() {
@@ -53,57 +53,56 @@ class WeatherViewModel: NSObject, ObservableObject {
     // MARK: - Functions for formatting weather data
     
     var cityName: String {
-        return self.weatherData?.name ?? ""
+        return self.weatherModel?.name ?? ""
     }
     
     var temp: String {
-        return "\(Int(self.weatherData?.main.temp ?? 0))°C"
+        return "\(Int(self.weatherModel?.main.temp ?? 0))°C"
     }
     
     var feelsLike: String {
-        return "\(Int(self.weatherData?.main.feelsLike ?? 0))°C"
+        return "\(Int(self.weatherModel?.main.feelsLike ?? 0))°C"
     }
     
     var descript: String {
-        return self.weatherData?.weather.first?.description.capitalized ?? ""
+        return self.weatherModel?.weather.first?.description.capitalized ?? ""
     }
     
     var windSpeed: String {
-        return "\(Int(self.weatherData?.wind.speed ?? 0)) km/h"
+        return "\(Int(self.weatherModel?.wind.speed ?? 0)) km/h"
     }
     
     var humidity: String {
-        return "\(Int(self.weatherData?.main.humidity ?? 0))%"
+        return "\(Int(self.weatherModel?.main.humidity ?? 0))%"
     }
     
     var sunriseTime: String {
-        if let sunrise = self.weatherData?.sys.sunrise {
+        if let sunrise = self.weatherModel?.sys.sunrise {
             return Date.fromUnixTimestamp(sunrise).formatTime()
         }
         return ""
     }
     
     var sunsetTime: String {
-        if let sunset = self.weatherData?.sys.sunset {
+        if let sunset = self.weatherModel?.sys.sunset {
             return Date.fromUnixTimestamp(sunset).formatTime()
         }
         return ""
     }
     
     var date: String {
-        if let dt = self.weatherData?.dt {
+        if let dt = self.weatherModel?.timestamp {
             return Date.fromUnixTimestamp(dt).formatFullDate()
         }
         return ""
     }
     
     var weatherIcon: Image {
-        guard let id = weatherData?.weather.first?.icon else {
+        guard let id = weatherModel?.weather.first?.icon else {
             return Image(systemName: "questionmark.circle")
         }
         return convertWeatherIconFromId(id)
     }
-    
 }
 
 extension WeatherViewModel: CLLocationManagerDelegate {
@@ -158,7 +157,7 @@ extension WeatherViewModel: CLLocationManagerDelegate {
             switch result {
             case .success(let weatherData):
                 DispatchQueue.main.async {
-                    self.weatherData = weatherData
+                    self.weatherModel = weatherData
                     self.errorMessage = nil
                 }
             case .failure(let error):
@@ -168,7 +167,7 @@ extension WeatherViewModel: CLLocationManagerDelegate {
     }
     
     func getLocationBySearch(_ query: String) {
-        guard let url = URL(string: API.getSearchWeather(query)) else {
+        guard let url = URL(string: API.getCurrentWeatherBySearch(query)) else {
             self.errorMessage = "Invalid URL"
             return
         }
@@ -177,7 +176,7 @@ extension WeatherViewModel: CLLocationManagerDelegate {
             switch result {
             case .success(let response):
                 DispatchQueue.main.async {
-                    self.weatherData = response
+                    self.weatherModel = response
                     self.errorMessage = nil
                 }
             case .failure(let error):
