@@ -5,6 +5,37 @@
 //  Created by Setthasit Poosawat on 5/3/23.
 //
 
+/*
+// MARK: - How to use?
+ 
+    // Create an instance of the view model
+    @StateObject var viewModel = WeatherViewModel()
+
+    var body: some View {
+        VStack {
+            if let weatherData = viewModel.weatherData {
+                Text(viewModel.cityName)
+                Text(viewModel.temp)
+                Text(viewModel.feelsLike)
+                Text(viewModel.descript)
+                Text(viewModel.windSpeed)
+                Text(viewModel.humidity)
+                Text(viewModel.sunriseTime)
+                Text(viewModel.sunsetTime)
+                Text(viewModel.date)
+                viewModel.weatherIcon
+            } else if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+            }
+        }
+        .onAppear {
+            // Get the current location and weather data when the view appears
+            viewModel.getLocation()
+        }
+    }
+
+ */
+
 import SwiftUI
 import CoreLocation
 
