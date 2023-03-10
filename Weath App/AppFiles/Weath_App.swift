@@ -10,7 +10,6 @@ import Firebase
 
 @main
 struct Weath_App: App {
-//    let firebaseApp = FirebaseApp.shared
     
     var body: some Scene {
         WindowGroup {
