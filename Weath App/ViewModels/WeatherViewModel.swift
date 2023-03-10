@@ -149,7 +149,7 @@ extension WeatherViewModel: CLLocationManagerDelegate {
         let longitude = location.coordinate.longitude
         
         guard let url = URL(string: API.getCurrentWeather(latitude, longitude)) else {
-            self.errorMessage = "Invalid URL"
+            self.errorMessage = "Location not found"
             return
         }
         
@@ -168,7 +168,7 @@ extension WeatherViewModel: CLLocationManagerDelegate {
     
     func getLocationBySearch(_ query: String) {
         guard let url = URL(string: API.getCurrentWeatherBySearch(query)) else {
-            self.errorMessage = "Invalid URL"
+            self.errorMessage = "Couldn't find the location"
             return
         }
         
