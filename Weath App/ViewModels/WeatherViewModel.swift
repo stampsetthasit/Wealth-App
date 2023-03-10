@@ -8,152 +8,161 @@
 import SwiftUI
 import CoreLocation
 
-final class WeatherViewModel: ObservableObject {
-    @Published var weatherModel = WeatherModel.sampleModel
-    @Published var city = "Bangkok" {
-        didSet {
-            getLocation()
-        }
-    }
-    @Published var isLoading = false
-    @Published var error: LocationError?
+class WeatherViewModel: NSObject, ObservableObject {
+    private let locationManager = CLLocationManager()
     
-    init() {
-        getLocation()
+    @Published var weatherData: WeatherModel?
+    @Published var errorMessage: String?
+    
+    override init() {
+        super.init()
+        self.locationManager.delegate = self
     }
     
-    private func getLocation() {
-        isLoading = true
-        error = nil
-        CLGeocoder().geocodeAddressString(city) { placemarks, error in
-            if let placemark = placemarks,
-               let place = placemarks?.first {
-                self.getWeather(place.location?.coordinate)
-            } else {
-                DispatchQueue.main.async {
-                    self.isLoading = false
-                    self.error = .failedToGetLocation
-                }
-            }
-        }
+    // MARK: - Functions for formatting weather data
+    
+    var cityName: String {
+        return self.weatherData?.name ?? ""
     }
     
-    private func getWeather(_ coord: CLLocationCoordinate2D?) {
-        var urlString = ""
-        if let coord = coord {
-            urlString = API.getCurrentWeather(coord.latitude, coord.longitude)
-        } else {
-            urlString = API.getCurrentWeather(100.5167, 13.75)
-        }
-        getWeatherInternal(city: city, for: urlString)
+    var temp: String {
+        return "\(Int(self.weatherData?.main.temp ?? 0))°C"
     }
     
-    private func getWeatherInternal(city: String, for urlString: String) {
-        guard let url = URL(string: urlString) else { return }
-        isLoading = true
-        NetworkManager<WeatherModel>.fetch(for: url) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let response):
-                    self.weatherModel = response
-                    self.isLoading = false
-                case .failure(let error):
-                    print(error)
-                    self.isLoading = false
-                }
-            }
-        }
+    var feelsLike: String {
+        return "\(Int(self.weatherData?.main.feelsLike ?? 0))°C"
     }
     
-    func refreshWeather() {
-        getLocation()
+    var descript: String {
+        return self.weatherData?.weather.first?.description.capitalized ?? ""
     }
     
-//    var date: String {
-//        return Time.defaultDateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(weather.current.date)) )
-//    }
-
-    var weatherIcon: String {
-        return weatherModel.weather[0].icon
-    }
-
-    var temperature: String {
-        return getTempFor(weatherModel.main.temp)
-    }
-    
-    var conditions: Int {
-        return weatherModel.weather[0].id
-    }
-
     var windSpeed: String {
-        return String(format: "%0.1f", weatherModel.wind.speed)
-    }
-
-    var humidity: String {
-        return String(format: "%d%%", weatherModel.main.humidity)
-    }
-
-//    var rainChances: String {
-//        return String(format: "%0.1f%%", weather.current.dewPoint)
-//    }
-
-//    func getTimeFor(_ temp: Int) -> String {
-//        return Time.timeFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(temp)))
-//    }
-//
-//    func getDayFor(_ temp: Int) -> String {
-//        return Time.dayFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(temp)))
-//    }
-//    
-//    func getDayNumber(_ temp: Int) -> String {
-//        return Time.dayNumberFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(temp)))
-//    }
-
-    func getTempFor(_ temp: Double) -> String {
-        return String(format: "%.1f", temp)
+        return "\(Int(self.weatherData?.wind.speed ?? 0)) km/h"
     }
     
-    func getWeatherIcon(id icon: String) -> Image {
-            switch icon {
-                case "01d":
-                    return Image("sun")
-                case "01n":
-                    return Image("moon")
-                case "02d":
-                    return Image("cloudSun")
-                case "02n":
-                    return Image("cloudMoon")
-                case "03d":
-                    return Image("cloud")
-                case "03n":
-                    return Image("cloudMoon")
-                case "04d":
-                    return Image("cloudMax")
-                case "04n":
-                    return Image("cloudMoon")
-                case "09d":
-                    return Image("rainy")
-                case "09n":
-                    return Image("rainy")
-                case "10d":
-                    return Image("rainySun")
-                case "10n":
-                    return Image("rainyMoon")
-                case "11d":
-                    return Image("thunderstormSun")
-                case "11n":
-                    return Image("thunderstormMoon")
-                case "13d":
-                    return Image("snowy")
-                case "13n":
-                    return Image("snowy-2")
-                case "50d":
-                    return Image("tornado")
-                case "50n":
-                    return Image("tornado")
-                default:
-                    return Image("sun")
-            }
+    var humidity: String {
+        return "\(Int(self.weatherData?.main.humidity ?? 0))%"
+    }
+    
+    var sunriseTime: String {
+        if let sunrise = self.weatherData?.sys.sunrise {
+            return Date.fromUnixTimestamp(sunrise).formatTime()
         }
+        return ""
+    }
+    
+    var sunsetTime: String {
+        if let sunset = self.weatherData?.sys.sunset {
+            return Date.fromUnixTimestamp(sunset).formatTime()
+        }
+        return ""
+    }
+    
+    var date: String {
+        if let dt = self.weatherData?.dt {
+            return Date.fromUnixTimestamp(dt).formatFullDate()
+        }
+        return ""
+    }
+    
+    var weatherIcon: Image {
+        guard let id = weatherData?.weather.first?.icon else {
+            return Image(systemName: "questionmark.circle")
+        }
+        return convertWeatherIconFromId(id)
+    }
+    
 }
 
+extension WeatherViewModel: CLLocationManagerDelegate {
+    
+    // MARK: - Functions for getting the weather data
+    
+    func getLocation() {
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+            case .authorizedWhenInUse, .authorizedAlways:
+                self.locationManager.requestLocation()
+            case .denied, .restricted:
+                self.errorMessage = "Location access denied"
+            case .notDetermined:
+                self.locationManager.requestWhenInUseAuthorization()
+            @unknown default:
+                break
+            }
+            self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            self.locationManager.startUpdatingLocation()
+        }
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+        case .authorizedWhenInUse, .authorizedAlways:
+            getCurrentWeatherData()
+        case .denied, .restricted:
+            self.errorMessage = "Location access denied"
+        case .notDetermined:
+            break
+        @unknown default:
+            break
+        }
+    }
+    
+    func getCurrentWeatherData() {
+        guard let location = locationManager.location else {
+            self.errorMessage = "Could not determine location"
+            return
+        }
+        
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
+        
+        guard let url = URL(string: API.getCurrentWeather(latitude, longitude)) else {
+            self.errorMessage = "Invalid URL"
+            return
+        }
+        
+        NetworkManager<WeatherModel>.fetch(for: url) { result in
+            switch result {
+            case .success(let weatherData):
+                DispatchQueue.main.async {
+                    self.weatherData = weatherData
+                    self.errorMessage = nil
+                }
+            case .failure(let error):
+                self.errorMessage = error.errorDescription
+            }
+        }
+    }
+    
+    func getLocationBySearch(_ query: String) {
+        guard let url = URL(string: API.getSearchWeather(query)) else {
+            self.errorMessage = "Invalid URL"
+            return
+        }
+        
+        NetworkManager<WeatherModel>.fetch(for: url) { result in
+            switch result {
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self.weatherData = response
+                    self.errorMessage = nil
+                }
+            case .failure(let error):
+                self.errorMessage = error.errorDescription
+            }
+        }
+    }
+
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        getCurrentWeatherData()
+        locationManager.stopUpdatingLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        self.errorMessage = error.localizedDescription
+    }
+    
+}

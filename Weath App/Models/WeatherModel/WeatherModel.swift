@@ -15,7 +15,7 @@ struct WeatherModel: Codable {
     let sys: Sys
     let wind: Wind
     
-    static var sampleModel = WeatherModel(name: "Bangkok", main: Main(temp: 306.09, feelsLike: 312.52, tempMin: 305.88, tempMax: 311.43, humidity: 60), weather: [Weather(id: 800, description: "clear sky", icon: "01d")], dt: 1678343102, sys: Sys(sunrise: 1678318199, sunset: 1678361254), wind: Wind(speed: 2.96))
+    static var sampleModel = WeatherModel(name: "BKK", main: Main(temp: 306.09, feelsLike: 312.52, tempMin: 305.88, tempMax: 311.43, humidity: 60), weather: [Weather(id: 800, description: "clear sky", icon: "01d")], dt: 1678343102, sys: Sys(sunrise: 1678318199, sunset: 1678361254), wind: Wind(speed: 2.96))
 }
 
 struct Main: Codable {
