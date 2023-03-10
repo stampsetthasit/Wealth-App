@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		99056F9029BB86B60026E644 /* ForecastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99056F8F29BB86B60026E644 /* ForecastViewModel.swift */; };
 		9918523229B9D04B006C3BE3 /* LocationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9918523129B9D04B006C3BE3 /* LocationError.swift */; };
 		992B90B229B2474E00A26A61 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 992B90B129B2474E00A26A61 /* FirebaseFirestore */; };
 		992B90B429B2474E00A26A61 /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 992B90B329B2474E00A26A61 /* FirebaseFirestoreCombine-Community */; };
@@ -73,6 +74,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		99056F8F29BB86B60026E644 /* ForecastViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastViewModel.swift; sourceTree = "<group>"; };
 		9918523129B9D04B006C3BE3 /* LocationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationError.swift; sourceTree = "<group>"; };
 		995510AD29BB1C440006E1CB /* WeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherView.swift; sourceTree = "<group>"; };
 		995510B129BB31C80006E1CB /* Resources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
@@ -192,13 +194,6 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
-		99A227C329B8758F00042C72 /* ForcastModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ForcastModel;
-			sourceTree = "<group>";
-		};
 		99A227C429B8796100042C72 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -271,6 +266,7 @@
 			isa = PBXGroup;
 			children = (
 				99E09B8729B3BED700D61E57 /* WeatherViewModel.swift */,
+				99056F8F29BB86B60026E644 /* ForecastViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -289,7 +285,6 @@
 		AD4643ED29B0798500FB240C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				99A227C329B8758F00042C72 /* ForcastModel */,
 				994236A229B850E700A800E1 /* AirQualityModel */,
 				994236A129B850A500A800E1 /* WeatherModel */,
 			);
@@ -528,6 +523,7 @@
 				AD9D338129B1A84C00BA9332 /* ForecastView.swift in Sources */,
 				996589D529B912D300507AE1 /* API+Extensions.swift in Sources */,
 				AD4643F629B0B91A00FB240C /* CardView.swift in Sources */,
+				99056F9029BB86B60026E644 /* ForecastViewModel.swift in Sources */,
 				996589D329B900E600507AE1 /* WeatherManagerDelegate.swift in Sources */,
 				9918523229B9D04B006C3BE3 /* LocationError.swift in Sources */,
 				995510B229BB31C80006E1CB /* Resources.swift in Sources */,
