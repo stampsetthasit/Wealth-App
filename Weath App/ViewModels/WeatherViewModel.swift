@@ -23,6 +23,8 @@
                 Text(viewModel.sunriseTime)
                 Text(viewModel.sunsetTime)
                 Text(viewModel.date)
+                Text(viewModel.pressure)
+                Text(viewModel.visibility)
                 viewModel.weatherIcon
             } else if let errorMessage = viewModel.errorMessage {
                 Text(errorMessage)
@@ -90,6 +92,23 @@ class WeatherViewModel: NSObject, ObservableObject {
         return ""
     }
     
+    var pressure: String {
+        if let pressure = self.weatherModel?.main.pressure {
+            let pressureMillibar = Int(Double((pressure)) / 100)
+            return "\(pressureMillibar) mb"
+        }
+        
+        return ""
+    }
+    
+    var visibility: String {
+        if let visibility = self.weatherModel?.visibility {
+            let visibilityInKm = Double(visibility) / 1000
+            return "\(visibilityInKm) km"
+        }
+        return ""
+    }
+    
     var date: String {
         if let dt = self.weatherModel?.timestamp {
             return Date.fromUnixTimestamp(dt).formatFullDate()
@@ -149,15 +168,15 @@ extension WeatherViewModel: CLLocationManagerDelegate {
         let longitude = location.coordinate.longitude
         
         guard let url = URL(string: API.getCurrentWeather(latitude, longitude)) else {
-            self.errorMessage = "Location not found"
+            self.errorMessage = "Invalid URL"
             return
         }
         
         NetworkManager<WeatherModel>.fetch(for: url) { result in
             switch result {
-            case .success(let weatherData):
+            case .success(let response):
                 DispatchQueue.main.async {
-                    self.weatherModel = weatherData
+                    self.weatherModel = response
                     self.errorMessage = nil
                 }
             case .failure(let error):
@@ -185,10 +204,17 @@ extension WeatherViewModel: CLLocationManagerDelegate {
         }
     }
 
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        
+        // Update the weather data for the user's current location
         getCurrentWeatherData()
         locationManager.stopUpdatingLocation()
+        
+        // Update the forecast data for the user's current location
+        if let forecastViewModel = self as? ForecastViewModel {
+            forecastViewModel.updateForecastData()
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

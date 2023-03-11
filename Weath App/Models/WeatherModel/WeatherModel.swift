@@ -15,6 +15,7 @@ struct WeatherModel: Codable {
     let sys: Sys
     let forecast: [Forecast]?
     let timestamp: Int
+    let visibility: Int
 
     enum CodingKeys: String, CodingKey {
         case name
@@ -24,6 +25,7 @@ struct WeatherModel: Codable {
         case sys
         case timestamp = "dt"
         case forecast = "list"
+        case visibility
     }
 }
 
