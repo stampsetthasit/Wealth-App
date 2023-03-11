@@ -205,16 +205,9 @@ extension WeatherViewModel: CLLocationManagerDelegate {
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
-        
-        // Update the weather data for the user's current location
+        guard locations.last != nil else { return }
         getCurrentWeatherData()
         locationManager.stopUpdatingLocation()
-        
-        // Update the forecast data for the user's current location
-        if let forecastViewModel = self as? ForecastViewModel {
-            forecastViewModel.updateForecastData()
-        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
