@@ -96,6 +96,10 @@ enum Resources {
                 UIImage(systemName: "drop.degreesign.fill")!
             }
             
+            static var eye: UIImage {
+                UIImage(systemName: "eye")!
+            }
+            
         }
     }
 }
