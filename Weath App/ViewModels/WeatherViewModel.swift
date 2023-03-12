@@ -5,48 +5,17 @@
 //  Created by Setthasit Poosawat on 5/3/23.
 //
 
-/*
-// MARK: - How to use?
- 
-    // Create an instance of the view model
-    @StateObject var viewModel = WeatherViewModel()
-
-    var body: some View {
-        VStack {
-            if let weatherData = viewModel.weatherData {
-                Text(viewModel.cityName)
-                Text(viewModel.temp)
-                Text(viewModel.feelsLike)
-                Text(viewModel.descript)
-                Text(viewModel.windSpeed)
-                Text(viewModel.humidity)
-                Text(viewModel.sunriseTime)
-                Text(viewModel.sunsetTime)
-                Text(viewModel.date)
-                Text(viewModel.pressure)
-                Text(viewModel.visibility)
-                viewModel.weatherIcon
-            } else if let errorMessage = viewModel.errorMessage {
-                Text(errorMessage)
-            }
-        }
-        .onAppear {
-            // Get the current location and weather data when the view appears
-            viewModel.getLocation()
-        }
-    }
-
- */
-
 import SwiftUI
 import CoreLocation
 
 class WeatherViewModel: NSObject, ObservableObject {
+    
     private let locationManager = CLLocationManager()
     
     @Published var weatherModel: WeatherModel?
+    @Published var forecastModel: ForecastModel?
     @Published var errorMessage: String?
-    
+
     override init() {
         super.init()
         self.locationManager.delegate = self
@@ -110,7 +79,7 @@ class WeatherViewModel: NSObject, ObservableObject {
     }
     
     var date: String {
-        if let dt = self.weatherModel?.timestamp {
+        if let dt = self.weatherModel?.dt {
             return Date.fromUnixTimestamp(dt).formatFullDate()
         }
         return ""
@@ -130,27 +99,28 @@ extension WeatherViewModel: CLLocationManagerDelegate {
     
     func getLocation() {
         if CLLocationManager.locationServicesEnabled() {
-            switch CLLocationManager.authorizationStatus() {
+            switch locationManager.authorizationStatus {
             case .authorizedWhenInUse, .authorizedAlways:
-                self.locationManager.requestLocation()
+                locationManager.requestLocation()
             case .denied, .restricted:
-                self.errorMessage = "Location access denied"
+                errorMessage = "[Location] Location access denied"
             case .notDetermined:
-                self.locationManager.requestWhenInUseAuthorization()
+                locationManager.requestWhenInUseAuthorization()
             @unknown default:
                 break
             }
-            self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            self.locationManager.startUpdatingLocation()
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
         }
     }
+
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case .authorizedWhenInUse, .authorizedAlways:
-            getCurrentWeatherData()
+            getWeatherData()
         case .denied, .restricted:
-            self.errorMessage = "Location access denied"
+            self.errorMessage = "[Location] Location access denied"
         case .notDetermined:
             break
         @unknown default:
@@ -158,45 +128,53 @@ extension WeatherViewModel: CLLocationManagerDelegate {
         }
     }
     
-    func getCurrentWeatherData() {
+    func getWeatherData() {
         guard let location = locationManager.location else {
-            self.errorMessage = "Could not determine location"
+            self.errorMessage = "[Location] Could not determine location"
             return
         }
         
-        let latitude = location.coordinate.latitude
-        let longitude = location.coordinate.longitude
-        
-        guard let url = URL(string: API.getCurrentWeather(latitude, longitude)) else {
-            self.errorMessage = "Invalid URL"
+        guard let currentWeatherURL = URL(string: API.getCurrentWeather(location.coordinate.latitude, location.coordinate.longitude)) else {
+            self.errorMessage = "[Weather] Invalid URL"
             return
         }
         
-        NetworkManager<WeatherModel>.fetch(for: url) { result in
+        guard let forecastWeatherURL = URL(string: API.getForecastWeather(location.coordinate.latitude, location.coordinate.longitude)) else {
+            self.errorMessage = "[Forecast] Invalid URL"
+            return
+        }
+        
+        NetworkManager.fetch(for: currentWeatherURL, for: forecastWeatherURL) { (result: Result<(WeatherModel, ForecastModel), HTTPError>) in
             switch result {
-            case .success(let response):
+            case .success(let (response1, response2)):
                 DispatchQueue.main.async {
-                    self.weatherModel = response
-                    self.errorMessage = nil
+                    self.weatherModel = response1
+                    self.forecastModel = response2
                 }
             case .failure(let error):
                 self.errorMessage = error.errorDescription
             }
         }
     }
+
     
-    func getLocationBySearch(_ query: String) {
-        guard let url = URL(string: API.getCurrentWeatherBySearch(query)) else {
-            self.errorMessage = "Couldn't find the location"
+    func getWeatherDataBySearch(_ query: String) {
+        guard let currentWeatherURL = URL(string: API.getCurrentWeatherBySearch(query)) else {
+            self.errorMessage = "[Weather] Invalid URL"
             return
         }
         
-        NetworkManager<WeatherModel>.fetch(for: url) { result in
+        guard let forecastWeatherURL = URL(string: API.getForecastWeatherBySearch(query)) else {
+            self.errorMessage = "[Forecast] Invalid URL"
+            return
+        }
+        
+        NetworkManager.fetch(for: currentWeatherURL, for: forecastWeatherURL) { (result: Result<(WeatherModel, ForecastModel), HTTPError>) in
             switch result {
-            case .success(let response):
+            case .success(let (response1, response2)):
                 DispatchQueue.main.async {
-                    self.weatherModel = response
-                    self.errorMessage = nil
+                    self.weatherModel = response1
+                    self.forecastModel = response2
                 }
             case .failure(let error):
                 self.errorMessage = error.errorDescription
@@ -206,7 +184,8 @@ extension WeatherViewModel: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard locations.last != nil else { return }
-        getCurrentWeatherData()
+        // Update the weather data for the user's current location
+        getWeatherData()
         locationManager.stopUpdatingLocation()
     }
     
