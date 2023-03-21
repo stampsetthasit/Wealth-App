@@ -1,5 +1,66 @@
 # Current Weather Example Usage
 ```swift
+struct HomeView: View {
+    @StateObject private var weatherVM = WeatherViewModel()
+    @State private var searchQuery = ""
+    @State private var showForecast = false
+
+    var body: some View {
+        NavigationView {
+            VStack {
+                if let weather = weatherVM.weatherModel {
+                    WeatherView(weatherVM: weatherVM) // pass the WeatherViewModel instance to WeatherView
+                } else if let errorMessage = weatherVM.errorMessage {
+                    Text(errorMessage)
+                }
+                
+                HStack {
+                    Spacer()
+                    TextField("Search location... 🔍", text: $searchQuery, onCommit: {
+                        weatherVM.getWeatherDataBySearch(searchQuery)
+                    })
+                    .hideKeyboardWhenTappedAround()
+                    .padding(.horizontal)
+                    .padding(.vertical, 8) // add vertical padding
+                    .background(Color.white) // set background color
+                    .cornerRadius(8) // add corner radius
+                    .shadow(radius: 4) // add shadow
+                    Spacer()
+                }
+                .padding(.horizontal)
+
+                Button(action: {
+                    weatherVM.getWeatherData()
+                }, label: {
+                    Text("Get Current Location 📍")
+                        .fontWeight(.semibold) // set font weight
+                        .padding(.horizontal, 24) // add horizontal padding
+                        .padding(.vertical, 12) // add vertical padding
+                        .background(Color.blue) // set background color
+                        .foregroundColor(.white) // set text color
+                        .cornerRadius(8) // add corner radius
+                        .shadow(radius: 4) // add shadow
+                })
+                .padding()
+                
+                NavigationLink(destination: ForecastView(forecastVM: weatherVM)) {
+                    Text("Forecast 🌤")
+                        .fontWeight(.semibold)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 12)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                        .shadow(radius: 4)
+                }
+            }
+            .navigationTitle(weatherVM.errorMessage ?? "Weath Beta")
+        }
+    }
+}
+
+```
+```swift
 struct CurrentExample: View {
     @ObservedObject var weatherVM: WeatherViewModel
     
