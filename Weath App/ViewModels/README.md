@@ -141,3 +141,19 @@ struct ForecastExample: View {
     }
 }
 ```
+
+# Air Quality Data Usage
+```swift
+struct AirQualityView: View {
+    @State var airVM = AirQualityViewModel()
+    
+    var body: some View {
+        Text("CO: \(airVM.formatCO())")
+        Text("NO: \(airVM.formatNO())")
+        Text("NO2: \(airVM.formatNO2())")
+        Text("PM 2.5: \(airVM.formatPM25())")
+        
+        Text("AQI: \(airVM.formatAirQualityIndex())")
+    }
+}
+```
