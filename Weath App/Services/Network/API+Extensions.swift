@@ -29,4 +29,10 @@ extension API {
     static func getForecastWeatherBySearch(_ name: String) -> String {
         return "\(baseURL)forecast?q=\(name)&appid=\(apiKey)&units=metric"
     }
+    
+    // MARK: - AirQuality
+    
+    static func getAirQuality(_ lat: Double, _ lon: Double) -> String {
+        return "\(baseURL)air_pollution?lat=\(lat)&lon=\(lon)&appid=\(apiKey)"
+    }
 }
