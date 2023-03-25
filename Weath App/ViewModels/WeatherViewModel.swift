@@ -19,6 +19,7 @@ class WeatherViewModel: NSObject, ObservableObject {
     override init() {
         super.init()
         self.locationManager.delegate = self
+        getLocation()
     }
     
     // MARK: - Functions for formatting weather data
@@ -111,20 +112,6 @@ extension WeatherViewModel: CLLocationManagerDelegate {
             }
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
-        }
-    }
-
-    
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        switch manager.authorizationStatus {
-        case .authorizedWhenInUse, .authorizedAlways:
-            getWeatherData()
-        case .denied, .restricted:
-            self.errorMessage = "[Location] Location access denied"
-        case .notDetermined:
-            break
-        @unknown default:
-            break
         }
     }
     
