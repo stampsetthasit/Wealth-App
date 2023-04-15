@@ -6,18 +6,15 @@
 //
 
 import SwiftUI
-import CoreLocation
 
 class AirQualityViewModel: NSObject, ObservableObject {
-
-    private let locationManager = CLLocationManager()
+    private let locationManager = LocationManager()
 
     @Published var airQualityModel: AirQualityModel?
     @Published var errorMessage: String?
 
     override init() {
         super.init()
-        self.locationManager.delegate = self
         getAirData()
     }
 
@@ -62,14 +59,18 @@ class AirQualityViewModel: NSObject, ObservableObject {
 }
 
 
-extension AirQualityViewModel: CLLocationManagerDelegate {
-    private func getAirData() {
-        guard let location = locationManager.location else {
-            self.errorMessage = "[Location] Could not determine location"
+extension AirQualityViewModel {
+    
+    // MARK: - Functions for getting the air quality data
+    
+    func getAirData() {        
+        guard let latitude = locationManager.userLocation?.coordinate.latitude.rounded(toPlaces: 2),
+              let longitude = locationManager.userLocation?.coordinate.longitude.rounded(toPlaces: 2) else {
+            self.errorMessage = "[Location] Location not determined"
             return
         }
         
-        guard let airQualityURL = URL(string: API.getAirQuality(location.coordinate.latitude, location.coordinate.longitude)) else {
+        guard let airQualityURL = URL(string: API.getAirQuality(latitude, longitude)) else {
             self.errorMessage = "[Weather] Invalid URL"
             return
         }

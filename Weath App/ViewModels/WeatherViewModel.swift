@@ -6,11 +6,9 @@
 //
 
 import SwiftUI
-import CoreLocation
 
 class WeatherViewModel: NSObject, ObservableObject {
-    
-    private let locationManager = CLLocationManager()
+    private let locationManager = LocationManager()
     
     @Published var weatherModel: WeatherModel?
     @Published var forecastModel: ForecastModel?
@@ -18,8 +16,7 @@ class WeatherViewModel: NSObject, ObservableObject {
 
     override init() {
         super.init()
-        self.locationManager.delegate = self
-        getLocation()
+        getWeatherData()
     }
     
     // MARK: - Functions for formatting weather data
@@ -94,39 +91,23 @@ class WeatherViewModel: NSObject, ObservableObject {
     }
 }
 
-extension WeatherViewModel: CLLocationManagerDelegate {
+extension WeatherViewModel {
     
     // MARK: - Functions for getting the weather data
     
-    func getLocation() {
-        if CLLocationManager.locationServicesEnabled() {
-            switch locationManager.authorizationStatus {
-            case .authorizedWhenInUse, .authorizedAlways:
-                locationManager.requestLocation()
-            case .denied, .restricted:
-                errorMessage = "[Location] Location access denied"
-            case .notDetermined:
-                locationManager.requestWhenInUseAuthorization()
-            @unknown default:
-                break
-            }
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.startUpdatingLocation()
-        }
-    }
-    
     func getWeatherData() {
-        guard let location = locationManager.location else {
-            self.errorMessage = "[Location] Could not determine location"
+        guard let latitude = locationManager.userLocation?.coordinate.latitude.rounded(toPlaces: 2),
+              let longitude = locationManager.userLocation?.coordinate.longitude.rounded(toPlaces: 2) else {
+            self.errorMessage = "[Location] Location not determined"
             return
         }
-        
-        guard let currentWeatherURL = URL(string: API.getCurrentWeather(location.coordinate.latitude, location.coordinate.longitude)) else {
+
+        guard let currentWeatherURL = URL(string: API.getCurrentWeather(latitude, longitude)) else {
             self.errorMessage = "[Weather] Invalid URL"
             return
         }
-        
-        guard let forecastWeatherURL = URL(string: API.getForecastWeather(location.coordinate.latitude, location.coordinate.longitude)) else {
+
+        guard let forecastWeatherURL = URL(string: API.getForecastWeather(latitude, longitude)) else {
             self.errorMessage = "[Forecast] Invalid URL"
             return
         }
@@ -139,7 +120,7 @@ extension WeatherViewModel: CLLocationManagerDelegate {
                     self.forecastModel = response2
                 }
             case .failure(let error):
-                self.errorMessage = error.errorDescription
+                self.errorMessage = "\(error.errorDescription)\nLat=\(latitude) Lon=\(longitude)"
             }
         }
     }
@@ -168,16 +149,4 @@ extension WeatherViewModel: CLLocationManagerDelegate {
             }
         }
     }
-
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard locations.last != nil else { return }
-        // Update the weather data for the user's current location
-        getWeatherData()
-        locationManager.stopUpdatingLocation()
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        self.errorMessage = error.localizedDescription
-    }
-    
 }
